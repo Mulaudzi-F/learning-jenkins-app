@@ -108,7 +108,7 @@ pipeline {
 
     }  
 
-            stage('Prod E2E') {
+    stage('Prod E2E') {
 
             agent{
                 docker{
@@ -121,7 +121,7 @@ pipeline {
             environment{
                 CI_ENVIRONMENT_URL= 'celebrated-strudel-db4eb7.netlify.app'
                  } 
-                 
+
             steps {
                 sh '''
                 npx playwright test --reporter=html
@@ -129,11 +129,11 @@ pipeline {
             } 
 
             post {
-        always {
+            always {
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'playwright E2E HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-        }
-    }
-        }
+            }
+         }
+     }
 
     
 }
