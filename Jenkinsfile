@@ -57,7 +57,7 @@ pipeline {
             junit 'jest-results/junit.xml'
            
         }
-    }
+     }
         }
 
         stage('stage test') {
@@ -82,13 +82,13 @@ pipeline {
         always {
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'playwright local HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
-    }
+     }
         }
             }
         }
 
 
-    stage('Deploy') {
+        stage('Deploy') {
             agent{
                 docker {
                     image 'node:18-alpine'
@@ -106,9 +106,9 @@ pipeline {
             }
         }
 
-    }  
+    
 
-    stage('Prod E2E') {
+     stage('Prod E2E') {
 
             agent{
                 docker{
@@ -133,7 +133,9 @@ pipeline {
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'playwright E2E HTML Report', reportTitles: '', useWrapperFileDirectly: true])
             }
          }
-     }
+        }
 
     
+    }
+
 }
