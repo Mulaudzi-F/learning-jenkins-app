@@ -34,29 +34,29 @@ pipeline {
 
         stage('Run Tests'){
 
-            parallel {
+         parallel {
 
                 
-         stage(' unit Test') {
+            stage(' unit Test') {
 
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
+                agent{
+                    docker{
+                        image 'node:18-alpine'
+                        reuseNode true
+                    }
                 }
-            }
-            steps {
-                sh '''
-                test -f build/index.html
-                npm test
-                '''
-            } 
+                steps {
+                    sh '''
+                    test -f build/index.html
+                    npm test
+                    '''
+                } 
 
-            post {
-         always {
-            junit 'jest-results/junit.xml'
-           
-        }
+                post {
+            always {
+                junit 'jest-results/junit.xml'
+        
+            }
      }
         }
 
@@ -105,12 +105,13 @@ pipeline {
                     node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
                     
                 '''
-            } 
-
-            script{
+                script{
 
                 env.STAGING_URL = sh(script: "node_modules/.bin/node-jq -r 'deploy_url' deploy-output.json", returnStout:true) 
             }
+            } 
+
+            
         } 
 
          stage('staging E2E') {
