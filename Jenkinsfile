@@ -5,7 +5,7 @@ pipeline {
 
             NETLIFY_SITE_ID ='8e22def3-c517-446a-80a0-fd5ade55b2da'
             NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-           
+            REACT_APP_VERSION ="1.0.$BUILD_ID"
     }
 
     stages {
@@ -124,11 +124,6 @@ pipeline {
          }
         }
 
-        stage('Approval'){
-            steps{
-                input 'Do you wish to deploy to production'
-            }
-        }
 
 
 
