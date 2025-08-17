@@ -15,7 +15,7 @@ pipeline {
                 docker{ 
 
                     image 'amazon/aws-cli'
-                    args "--entrypoints''"
+                    args "--entrypoints=''"
                 }
             } 
 
