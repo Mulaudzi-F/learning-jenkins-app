@@ -85,7 +85,7 @@ pipeline {
                     }
                 }
 
-                stage('E2E') {
+                 stage('E2E') {
                     agent {
                         docker {
                             image 'my-playwright'
