@@ -3,7 +3,7 @@ pipeline {
 
     environment {
        NETLIFY_SITE_ID ='8e22def3-c517-446a-80a0-fd5ade55b2da'
-            NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
         REACT_APP_VERSION = "1.0.$BUILD_ID"
     }
 
@@ -27,13 +27,9 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                  sh '''
-                    echo $AWS_ACCESS_KEY_ID
-                    echo $AWS_SECRET_ACCESS_KEY
-
+                    
                     aws --version
-                    echo "Hello S3!" > index.html
-                    aws s3 cp index.html s3://${AWS_S3_BUCKET}/index.html
-        
+                    aws s3 sync build s3://${AWS_S3_BUCKET}
                     '''
                 }
 
@@ -60,7 +56,36 @@ pipeline {
                     ls -la
                 '''
             }
+        } 
+
+         stage('AWS'){
+
+            agent{
+                docker{ 
+
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                }
+            }  
+
+            environment{
+
+                AWS_S3_BUCKET = 'learning-jenkins-01'
+            }
+
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'my aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                 sh '''
+                    
+                    aws --version
+                    aws s3 sync build s3://${AWS_S3_BUCKET}
+                    '''
+                }
+
+               
+            }
         }
+
 
         stage('Tests') {
             parallel {
